@@ -24,11 +24,13 @@ public class ZTime extends BasicGame {
 			throws SlickException {
 		Case.init();
 		Terrain terrain = new Terrain(100);
-		cam = new Camera(terrain);
+		cam = new Camera(gc, terrain);
 	}
 	
 	public void update(GameContainer gc, int i) 
-			throws SlickException {}
+			throws SlickException {
+		cam.update();
+	}
 
 	public void render(GameContainer gc, Graphics g) 
 			throws SlickException {
