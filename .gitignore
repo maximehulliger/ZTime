@@ -64,3 +64,4 @@ $RECYCLE.BIN/
 *.prefs
 *.project
 *.classpath
+/bin/
