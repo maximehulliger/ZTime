@@ -17,9 +17,10 @@ public class Terrain {
 	}
 	
 	public Case get(int x, int y) {
-		//if (x<0 || x>=size || y<0 || y>=size)
-		//	return null;
-		//else
-			return terrain[x][y];
+		return terrain[x][y];
+	}
+	
+	public boolean isIn(int x, int y) {
+		return x>0 && y>0 && x<size && y<size;
 	}
 }

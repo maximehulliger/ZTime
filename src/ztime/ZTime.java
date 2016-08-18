@@ -9,21 +9,23 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 
 import ztime.terrain.Case;
+import ztime.terrain.Pathfinder;
 import ztime.terrain.Terrain;
 
 public class ZTime extends BasicGame {
 
-	public static final int width = 640, height = 480;
+	public static final int width = 720, height = 540;
 	Camera cam;
 	
-	public ZTime(String gamename) {
-		super(gamename);
+	public ZTime() {
+		super("ZTime");
 	}
 
 	public void init(GameContainer gc) 
 			throws SlickException {
 		Case.init();
 		Terrain terrain = new Terrain(100);
+		Pathfinder.init(terrain);
 		cam = new Camera(gc, terrain);
 	}
 	
@@ -41,8 +43,8 @@ public class ZTime extends BasicGame {
 	public static void main(String[] args) {
 		try {
 			AppGameContainer appgc;
-			appgc = new AppGameContainer(new ZTime("Simple Slick Game"));
-			appgc.setDisplayMode(640, 480, false);
+			appgc = new AppGameContainer(new ZTime());
+			appgc.setDisplayMode(width, height, false);
 			appgc.start();
 		} catch (SlickException ex) {
 			Logger.getLogger(ZTime.class.getName()).log(Level.SEVERE, null, ex);

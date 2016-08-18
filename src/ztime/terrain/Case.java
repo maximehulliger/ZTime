@@ -49,4 +49,15 @@ public class Case {
     		return null;
     	}
     }
+    
+    public boolean isWalkable() {
+    	switch (type) {
+    	case Plaine:
+    	case Terre:
+    	case Sable:
+    		return true;
+    	default:
+    		return false;
+    	}
+    }
 }
