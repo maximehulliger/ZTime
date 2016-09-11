@@ -7,7 +7,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import ztime.object.composant.Composant;
 
-public class Object {
+public abstract class Object {
 	
 	public final Vector2f pos = new Vector2f();
 	private Map<Class<? extends Composant>, Composant> composants = new HashMap<>();
@@ -40,5 +40,8 @@ public class Object {
 		for (Composant c : composants.values())
 			c.draw();
 	}
+
+	public abstract boolean isIn(Vector2f point);
 	
+	public abstract void drawSelection();
 }

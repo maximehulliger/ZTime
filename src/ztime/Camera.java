@@ -38,11 +38,13 @@ public class Camera {
 				new Vector2f(ZTime.width, ZTime.height).scale(0.5f));
 	}
 	
+	public void onMouseLeftPressed(int x, int y) {
+		dragLastPos.set(x, y);
+	}
+	
 	public void update() {
 		// drag movement
-		if (input.isMousePressed(0)) {
-			dragLastPos.set(input.getMouseX(), input.getMouseY());
-		} else if (input.isMouseButtonDown(0)) {
+		if (input.isMouseButtonDown(0)) {
 			Vector2f dragDiff = new Vector2f(input.getMouseX(), input.getMouseY()).sub(dragLastPos);
 			dragDiff.scale(1/tileSize);
 			pos.sub(dragDiff);

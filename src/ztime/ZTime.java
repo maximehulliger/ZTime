@@ -20,7 +20,9 @@ public class ZTime extends BasicGame {
 
 	public static final int width = 720, height = 540;
 	public static Camera cam;
+	public static GameContainer gc;
 	public List<Object> objects = new ArrayList<>();
+	private Selector selector;
 	
 	public ZTime() {
 		super("ZTime");
@@ -31,7 +33,9 @@ public class ZTime extends BasicGame {
 		Case.init();
 		Terrain terrain = new Terrain(100);
 		Pathfinder.init(terrain);
+		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
+		selector = new Selector(gc, objects);
 		Object exampleUnit1 = new Unit("d_d");
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
@@ -42,6 +46,7 @@ public class ZTime extends BasicGame {
 		for (Object o : objects)
 			o.update();
 		cam.update();
+		selector.update();
 	}
 
 	public void render(GameContainer gc, Graphics g) 
@@ -49,7 +54,7 @@ public class ZTime extends BasicGame {
 		cam.render();
 		for (Object o : objects)
 			o.draw();
-		g.drawString("Continue!", 10, 50);
+		selector.draw();
 	}
 
 	public static void main(String[] args) {
@@ -62,5 +67,11 @@ public class ZTime extends BasicGame {
 			Logger.getLogger(ZTime.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-
+	
+	public void mousePressed(int button, int x, int y) {
+		if (button == 0) {
+			cam.onMouseLeftPressed(x, y);
+			selector.onMouseLeftPressed(x, y);
+		}
+	}
 }
