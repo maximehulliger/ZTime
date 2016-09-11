@@ -8,14 +8,15 @@ import ztime.terrain.Case;
 import ztime.terrain.Terrain;
 
 public class Camera {
-	public static final float tileSize = 32;
-	public static final float speed = 20;
+	public final float tileSize = 32;
+	public static final float speed = 40;
 	
 	private final Terrain terrain;
 	private final Input input;
 	private final GameContainer gc;
-	
-	private final Vector2f pos;
+	/** En tile. */
+	public final Vector2f pos;
+	/** En pixel */
 	private final Vector2f dragLastPos = new Vector2f();
 	
 	public Camera(GameContainer gc, Terrain terrain) {
@@ -23,6 +24,18 @@ public class Camera {
 		this.input = gc.getInput();
 		this.gc = gc;
 		pos = new Vector2f(terrain.size/2f, terrain.size/2f);
+	}
+	
+	public Vector2f toTerrain(Vector2f screenPos) {
+		return pos.copy().add( 
+				screenPos.copy().sub(
+						new Vector2f(ZTime.width, ZTime.height).scale(0.5f)
+						).scale(1f/tileSize));
+	}
+
+	public Vector2f toScreen(Vector2f terrainPos) {
+		return terrainPos.copy().sub(pos).scale(tileSize).add(
+				new Vector2f(ZTime.width, ZTime.height).scale(0.5f));
 	}
 	
 	public void update() {
@@ -79,7 +92,7 @@ public class Camera {
 	            	float yp = posPremPixelY+j*tileSize;
 
 	            	//on la peint
-	            	c.getImage().draw(xp, yp);
+	            	c.getImage().draw(xp, yp, tileSize, tileSize);
 	            }
 	        }
 	    }

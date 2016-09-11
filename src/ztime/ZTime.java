@@ -1,5 +1,7 @@
 package ztime;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.AppGameContainer;
@@ -11,11 +13,14 @@ import org.newdawn.slick.SlickException;
 import ztime.terrain.Case;
 import ztime.terrain.Pathfinder;
 import ztime.terrain.Terrain;
+import ztime.object.Object;
+import ztime.object.Unit;
 
 public class ZTime extends BasicGame {
 
 	public static final int width = 720, height = 540;
-	Camera cam;
+	public static Camera cam;
+	public List<Object> objects = new ArrayList<>();
 	
 	public ZTime() {
 		super("ZTime");
@@ -27,17 +32,24 @@ public class ZTime extends BasicGame {
 		Terrain terrain = new Terrain(100);
 		Pathfinder.init(terrain);
 		cam = new Camera(gc, terrain);
+		Object exampleUnit1 = new Unit("d_d");
+		exampleUnit1.pos.set(cam.pos);
+		objects.add(exampleUnit1);
 	}
 	
 	public void update(GameContainer gc, int i) 
 			throws SlickException {
+		for (Object o : objects)
+			o.update();
 		cam.update();
 	}
 
 	public void render(GameContainer gc, Graphics g) 
 			throws SlickException {
 		cam.render();
-		g.drawString("Howdy!", 10, 50);
+		for (Object o : objects)
+			o.draw();
+		g.drawString("Continue!", 10, 50);
 	}
 
 	public static void main(String[] args) {
