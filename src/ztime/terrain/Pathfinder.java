@@ -14,7 +14,7 @@ public class Pathfinder {
 	
 	private final Map<Integer, PathNode> cache = new HashMap<>();
 	
-	private float sq(float x) {
+	private static float sq(float x) {
 		return x*x;
 	}
 	
@@ -22,8 +22,8 @@ public class Pathfinder {
 		return sq(goalX-x)+sq(goalY-y);
 	}
 	
-	public PathNode computePath(float fromX, float fromY, float toX, float toY) {
-		PathNode endNode = computePathReversed(fromX, fromY, toX, toY); 
+	public static PathNode computePath(float fromX, float fromY, float toX, float toY) {
+		PathNode endNode = new Pathfinder().computePathReversed(fromX, fromY, toX, toY); 
 		//on inverse la parenté jusqu'au commencement
 		PathNode lastNode = null;
 		for ( PathNode node = endNode ; node != null ; node.parent = lastNode, lastNode = node );

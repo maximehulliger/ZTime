@@ -4,7 +4,7 @@ public class PathNode {
 	
 	final Case c;
 	
-	final float x, y;
+	public final float x, y;
     float D = -1;
     float H = -1;
     PathNode parent = null;
