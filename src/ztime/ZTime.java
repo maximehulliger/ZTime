@@ -9,6 +9,7 @@ import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 import ztime.terrain.Case;
 import ztime.terrain.Pathfinder;
@@ -21,7 +22,7 @@ public class ZTime extends BasicGame {
 	public static final int width = 720, height = 540;
 	public static Camera cam;
 	public static GameContainer gc;
-	public List<Object> objects = new ArrayList<>();
+	private static List<Object> objects = new ArrayList<>();
 	private Selector selector;
 	
 	public ZTime() {
@@ -35,7 +36,8 @@ public class ZTime extends BasicGame {
 		Pathfinder.init(terrain);
 		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
-		selector = new Selector(gc, objects);
+		selector = new Selector(gc);
+		
 		Object exampleUnit1 = new Unit("d_d");
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
@@ -43,6 +45,7 @@ public class ZTime extends BasicGame {
 	
 	public void update(GameContainer gc, int i) 
 			throws SlickException {
+		Time.update();
 		for (Object o : objects)
 			o.update();
 		cam.update();
@@ -73,5 +76,12 @@ public class ZTime extends BasicGame {
 			cam.onMouseLeftPressed(x, y);
 			selector.onMouseLeftPressed(x, y);
 		}
+	}
+	
+	public static Object objectUnder(Vector2f terrainPoint) {
+		for (Object o : objects)
+			if (o.isIn(terrainPoint))
+				return o;
+		return null;
 	}
 }

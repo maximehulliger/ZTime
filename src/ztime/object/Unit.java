@@ -6,7 +6,8 @@ import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 
 import ztime.ZTime;
-import ztime.object.composant.Navigator;
+import ztime.object.activity.FollowPath;
+import ztime.object.composant.Activator;
 import ztime.object.composant.Renderer;
 
 public class Unit extends Object {
@@ -16,7 +17,7 @@ public class Unit extends Object {
 	public Unit(String name) {
 		super(name);
 		super.addComposant(new Renderer("unit.bmp", new Vector2f(radius*2, radius*2)));
-		super.addComposant(new Navigator());
+		super.addComposant(new Activator());
 	}
 
 	public boolean isIn(Vector2f point) {
@@ -30,4 +31,7 @@ public class Unit extends Object {
 		g.draw(new Circle(screenPos.x, screenPos.y, radius*ZTime.cam.tileSize));
 	}
 
+	public void onRightClickSelected(Vector2f point) {
+		get(Activator.class).set(new FollowPath(this, point));
+	}
 }
