@@ -9,8 +9,10 @@ public abstract class Activity {
 	public void setActivator(Activator activator) {
 		this.activator = activator;
 	}
-	
+
 	public abstract void update();
+
+	public void draw() {}
 	
 	public abstract boolean isOver();
 }

@@ -19,6 +19,13 @@ public class Selector {
 		Vector2f mousePos = ZTime.cam.toTerrain(new Vector2f(input.getMouseX(), input.getMouseY()));
 		selected = ZTime.objectUnder(mousePos);
 	}
+
+	public void onMouseRightPressed(int x, int y) {
+		if (selected != null) {
+			Vector2f mousePos = ZTime.cam.toTerrain(new Vector2f(input.getMouseX(), input.getMouseY()));
+			selected.onRightClickSelected(mousePos);
+		}
+	}
 	
 	public void update() {
 		

@@ -15,6 +15,10 @@ public class Activator extends Composant {
 		}
 	}
 
+	public void draw() {
+		if (activity != null)
+				activity.draw();
+	}
 	public void set(Activity activity) {
 		this.activity = activity;
 		activity.setActivator(this);

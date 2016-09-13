@@ -32,7 +32,7 @@ public class ZTime extends BasicGame {
 	public void init(GameContainer gc) 
 			throws SlickException {
 		Case.init();
-		Terrain terrain = new Terrain(100);
+		Terrain terrain = new Terrain(10);
 		Pathfinder.init(terrain);
 		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
@@ -75,6 +75,8 @@ public class ZTime extends BasicGame {
 		if (button == 0) {
 			cam.onMouseLeftPressed(x, y);
 			selector.onMouseLeftPressed(x, y);
+		} else if (button == 1) {
+			selector.onMouseRightPressed(x, y);
 		}
 	}
 	
