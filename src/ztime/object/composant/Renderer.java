@@ -1,6 +1,7 @@
 package ztime.object.composant;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -27,6 +28,15 @@ public class Renderer extends Composant {
 		// image upper left corner in pixel
 		Vector2f ul = ZTime.cam.toScreen(object.pos.copy().add(posRel));
 		image.draw(ul.x, ul.y, size.x*ZTime.cam.tileSize, size.y*ZTime.cam.tileSize);
+	}
+	
+	public void drawFaded(Color color) {
+		Vector2f ul = ZTime.cam.toScreen(object.pos.copy().add(posRel));
+		final float sizeX = size.x*ZTime.cam.tileSize, sizeY = size.y*ZTime.cam.tileSize;
+		image.draw(ul.x, ul.y, sizeX, sizeY);
+		Graphics g = ZTime.gc.getGraphics();
+		g.setColor(color);
+		g.fillRect(ul.x, ul.y, sizeX, sizeY);
 	}
 	
 }

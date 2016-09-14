@@ -29,5 +29,4 @@ public class Unit extends Object {
 		Vector2f screenPos = ZTime.cam.toScreen(pos);
 		g.draw(new Circle(screenPos.x, screenPos.y, radius*ZTime.cam.tileSize));
 	}
-
 }

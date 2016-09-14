@@ -17,6 +17,7 @@ public class Case {
     
     
     Type type;
+    public boolean occupied = false;
     
     public Case(Type type) {
     	this.type = type;
@@ -51,6 +52,8 @@ public class Case {
     }
     
     public boolean isWalkable() {
+    	if (occupied)
+    		return false;
     	switch (type) {
     	case Plaine:
     	case Terre:

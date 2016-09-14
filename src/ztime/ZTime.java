@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
@@ -13,6 +15,7 @@ import org.newdawn.slick.SlickException;
 import ztime.terrain.Case;
 import ztime.terrain.Pathfinder;
 import ztime.terrain.Terrain;
+import ztime.object.Building;
 import ztime.object.Object;
 import ztime.object.Unit;
 
@@ -20,9 +23,10 @@ public class ZTime extends BasicGame {
 
 	public static final int width = 720, height = 540;
 	public static Camera cam;
+	public static Terrain terrain;
 	public static GameContainer gc;
-	public List<Object> objects = new ArrayList<>();
-	private Selector selector;
+	public static List<Object> objects = new ArrayList<>();
+	public static Selector selector;
 	
 	public ZTime() {
 		super("ZTime");
@@ -31,7 +35,7 @@ public class ZTime extends BasicGame {
 	public void init(GameContainer gc) 
 			throws SlickException {
 		Case.init();
-		Terrain terrain = new Terrain(100);
+		terrain = new Terrain(100);
 		Pathfinder.init(terrain);
 		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
@@ -39,6 +43,7 @@ public class ZTime extends BasicGame {
 		Object exampleUnit1 = new Unit("d_d");
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
+		selector.setToPlace(new Building("pm", new Vector2f(2, 3)));
 	}
 	
 	public void update(GameContainer gc, int i) 
@@ -74,4 +79,12 @@ public class ZTime extends BasicGame {
 			selector.onMouseLeftPressed(x, y);
 		}
 	}
+
+	/*public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		bPlacer.mouseMoved(newx, newy);
+	}
+
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		bPlacer.mouseMoved(newx, newy);
+	}*/
 }
