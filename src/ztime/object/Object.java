@@ -44,4 +44,6 @@ public abstract class Object {
 	public abstract boolean isIn(Vector2f point);
 	
 	public abstract void drawSelection();
+	
+	public void onRightClickSelected(Vector2f point) {}
 }

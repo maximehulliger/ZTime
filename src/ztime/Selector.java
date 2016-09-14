@@ -1,7 +1,5 @@
 package ztime;
 
-import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
@@ -15,15 +13,12 @@ public class Selector {
 	
 	private Mode mode = Mode.None;
 	private final Input input;
-	private final List<Object> objects;
-	
 	private Object selected = null;
 	private Building toPlace = null;
 	
 	
-	public Selector(GameContainer gc, List<Object> objects) {
+	public Selector(GameContainer gc) {
 		this.input = gc.getInput();
-		this.objects = objects;
 	}
 
 	public void onMouseLeftPressed(int x, int y) {
@@ -31,12 +26,9 @@ public class Selector {
 		case None:
 		case Selection:
 			Vector2f mousePos = ZTime.cam.toTerrain(new Vector2f(x, y));
-			selected = null;
-			for (Object o : objects)
-				if (o.isIn(mousePos)) {
-					selected = o;
-					mode = Mode.Selection;
-				}
+			selected = ZTime.objectUnder(mousePos);;
+			if (selected != null)
+				mode = Mode.Selection;
 			break;
 		case Placement:
 			Vector2f point = ZTime.cam.toTerrain(new Vector2f(x,y));
@@ -50,6 +42,13 @@ public class Selector {
 	public void setToPlace(Building toPlace) {
 		this.toPlace = toPlace;
 		this.mode = Mode.Placement;
+	}
+
+	public void onMouseRightPressed(int x, int y) {
+		if (selected != null) {
+			Vector2f mousePos = ZTime.cam.toTerrain(new Vector2f(input.getMouseX(), input.getMouseY()));
+			selected.onRightClickSelected(mousePos);
+		}
 	}
 	
 	public void update() {

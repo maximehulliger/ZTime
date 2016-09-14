@@ -26,7 +26,8 @@ public class ZTime extends BasicGame {
 	public static Terrain terrain;
 	public static GameContainer gc;
 	public static List<Object> objects = new ArrayList<>();
-	public static Selector selector;
+	
+	private Selector selector;
 	
 	public ZTime() {
 		super("ZTime");
@@ -39,7 +40,8 @@ public class ZTime extends BasicGame {
 		Pathfinder.init(terrain);
 		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
-		selector = new Selector(gc, objects);
+		selector = new Selector(gc);
+		
 		Object exampleUnit1 = new Unit("d_d");
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
@@ -48,6 +50,7 @@ public class ZTime extends BasicGame {
 	
 	public void update(GameContainer gc, int i) 
 			throws SlickException {
+		Time.update();
 		for (Object o : objects)
 			o.update();
 		cam.update();
@@ -77,14 +80,15 @@ public class ZTime extends BasicGame {
 		if (button == 0) {
 			cam.onMouseLeftPressed(x, y);
 			selector.onMouseLeftPressed(x, y);
+		} else if (button == 1) {
+			selector.onMouseRightPressed(x, y);
 		}
 	}
 
-	/*public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-		bPlacer.mouseMoved(newx, newy);
+	public static Object objectUnder(Vector2f terrainPoint) {
+		for (Object o : objects)
+			if (o.isIn(terrainPoint))
+				return o;
+		return null;
 	}
-
-	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
-		bPlacer.mouseMoved(newx, newy);
-	}*/
 }

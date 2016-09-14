@@ -7,7 +7,7 @@ public class Terrain {
 	
 	public Terrain(int size) {
 		this.size = size;
-		int seed = 1008;
+		int seed = 107;
 		terrain = new Case[size][size];
 		for (int i=0; i<size; i++) {
 	        for (int j=0; j<size; j++) {
