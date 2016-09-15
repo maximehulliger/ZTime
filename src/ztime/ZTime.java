@@ -10,6 +10,7 @@ import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import ztime.terrain.Case;
@@ -45,7 +46,6 @@ public class ZTime extends BasicGame {
 		Object exampleUnit1 = new Unit("d_d");
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
-		selector.setToPlace(new Building("pm", new Vector2f(2, 3)));
 	}
 	
 	public void update(GameContainer gc, int i) 
@@ -55,6 +55,9 @@ public class ZTime extends BasicGame {
 			o.update();
 		cam.update();
 		selector.update();
+		
+		if (gc.getInput().isKeyPressed(Input.KEY_E))
+			selector.setToPlace(new Building("pm", new Vector2f(2, 3)));
 	}
 
 	public void render(GameContainer gc, Graphics g) 

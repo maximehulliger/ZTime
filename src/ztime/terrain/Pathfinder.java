@@ -19,38 +19,55 @@ public class Pathfinder {
 	}
 	
 	private float getH(float x, float y, float goalX, float goalY) {
-		return sq(goalX-x)+sq(goalY-y);
+		return (float)Math.sqrt(sq(goalX-x)+sq(goalY-y));
 	}
 	
 	public static PathNode computePath(float fromX, float fromY, float toX, float toY) {
-		PathNode endNode = new Pathfinder().computePathReversed(fromX, fromY, toX, toY); 
-		//on inverse la parenté jusqu'au commencement
-		PathNode lastNode = null;
-		for ( PathNode node = endNode ; node != null;) {
-			PathNode next = node.parent;
-			node.parent = lastNode;
-			lastNode = node;
-			node = next; 
+		final int toXi = (int)toX, toYi = (int)toY;
+		if (!terrain.isIn(toXi, toYi) || !terrain.get(toXi, toYi).isWalkable())
+			return null;
+		else {
+			PathNode endNode = new Pathfinder().computePathReversed((int)fromX+0.5f, (int)fromY+0.5f, (int)toX+0.5f, (int)toY+0.5f); 
+			if (endNode == null)
+				return null;
+			else if (endNode.parent != null) {
+				//on ajoute le dernier noeud
+				PathNode realEndNode = new PathNode(toX, toY);
+				realEndNode.parent = endNode.parent;
+				
+				//on inverse la parenté jusqu'au commencement
+				PathNode lastNode = null;
+				for (PathNode node = realEndNode ; node != null;) {
+					PathNode next = node.parent;
+					node.parent = lastNode;
+					lastNode = node;
+					node = next;
+				}
+				
+				//on ajoute le premier noeud
+				PathNode realStartNode = new PathNode(fromX, fromY);
+				realStartNode.parent = lastNode.parent;
+				
+				return realStartNode;
+			} else {
+				return new PathNode(toX, toY);
+			}
 		}
-		return lastNode;
 	}
 	
 	private PathNode computePathReversed(float fromX, float fromY, float toX, float toY) {
 		Set<PathNode> openList = new HashSet<>();
-		PathNode bestNode = new PathNode(fromX, fromY);
+		PathNode bestNode = getNode((int)fromX, (int)fromY);
 		bestNode.D = 0;
 		bestNode.H = getH(fromX, fromX, toX, toY);
 		openList.add(bestNode);
-		cache.put((int)fromX + ((int)fromY)<<16, bestNode);
-		
+
 		while (!openList.isEmpty()) {
-			//si on a terminé, on ajoute le dernier noeud
+			//si on a terminé
 			if ((int)bestNode.x == (int)toX && (int)bestNode.y == (int)toY) {
-				PathNode endNode = new PathNode(toX, toY);
-				endNode.parent = bestNode;
-				return endNode;
+				return bestNode;
 			}
-			
+
 			openList.remove(bestNode);
 			
 			//on ajoute ses voisins à l'openList
@@ -69,11 +86,11 @@ public class Pathfinder {
 						if (v.isNew()) {
 							openList.add(v);
 							v.D = futurD;
-							v.H = getH(vx, vy, toX, toY);
+							v.H = getH(v.x, v.y, toX, toY);
 							v.parent = bestNode;
-						} else if (v.D < futurD) {
+						} else if (v.D > futurD) {
 							v.D = futurD;
-							v.H = getH(vx, vy, toX, toY);
+							v.H = getH(v.x, v.y, toX, toY);
 							v.parent = bestNode;
 						}	
 					} 
@@ -97,17 +114,26 @@ public class Pathfinder {
 	private List<PathNode> getNewVoisins(PathNode node) {
 		int x = (int)node.x, y = (int)node.y;
 		List<PathNode> voisins = new ArrayList<>();
-		int[] xs = new int[] {x+1, x+1, x, x-1, x, x-1, x, x+1};
-		int[] ys = new int[] {y, y+1, y+1, y+1, y-1, y-1, y-1, y-1};
+		int[] xs = new int[] {x+1, x+1, x,   x-1, x-1, x-1, x,   x+1};
+		int[] ys = new int[] {y,   y+1, y+1, y+1, y,   y-1, y-1, y-1};
 		for (int i=0; i<8; i++) {
-			int location = xs[i] + (ys[i]<<16);
-			if (terrain.isIn(xs[i], ys[i]) && !cache.containsKey(location)) {
-				PathNode newNode = new PathNode(xs[i]+0.5f,ys[i]+0.5f);
-				cache.put(location, newNode);
-				voisins.add(newNode);
+			if (terrain.isIn(xs[i], ys[i]) && terrain.get(xs[i], ys[i]).isWalkable()) {
+				voisins.add(getNode(xs[i], ys[i]));
 			}
 		}
 		return voisins;
+	}
+	
+	private PathNode getNode(int x, int y) {
+		final int location = x + (y<<16);
+		PathNode cached = cache.get(location);
+		if (cached == null) {
+			PathNode newNode = new PathNode(x+0.5f,y+0.5f);
+			cache.put(location, newNode);
+			return newNode;
+		} else
+			return cached;
+			
 	}
 	
 	public static void init(Terrain terrain) {
