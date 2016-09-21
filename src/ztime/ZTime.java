@@ -16,9 +16,12 @@ import org.newdawn.slick.SlickException;
 import ztime.terrain.Case;
 import ztime.terrain.Pathfinder;
 import ztime.terrain.Terrain;
+import ztime.Selector.Selectable;
+import ztime.gui.Button;
+import ztime.gui.GUIManager;
 import ztime.object.Building;
 import ztime.object.Object;
-import ztime.object.Unit;
+import ztime.object.Villager;
 
 public class ZTime extends BasicGame {
 
@@ -27,8 +30,10 @@ public class ZTime extends BasicGame {
 	public static Terrain terrain;
 	public static GameContainer gc;
 	public static List<Object> objects = new ArrayList<>();
+	public static ResourceManager resources = new ResourceManager();
 	
 	private Selector selector;
+	private GUIManager gui;
 	
 	public ZTime() {
 		super("ZTime");
@@ -36,16 +41,23 @@ public class ZTime extends BasicGame {
 
 	public void init(GameContainer gc) 
 			throws SlickException {
+		ZTime.gc = gc;
+		gui = new GUIManager();
 		Case.init();
+		ResourceManager.init();
 		terrain = new Terrain(100);
 		Pathfinder.init(terrain);
-		ZTime.gc = gc;
 		cam = new Camera(gc, terrain);
 		selector = new Selector(gc);
 		
-		Object exampleUnit1 = new Unit("d_d");
+		Object exampleUnit1 = new Villager();
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
+		
+		Button b = new Button(100 ,100 ,100, 20);
+		b.text = "click me!";
+		b.setOnClick(() -> System.out.println("click"));
+		gui.add(b);
 	}
 	
 	public void update(GameContainer gc, int i) 
@@ -66,6 +78,8 @@ public class ZTime extends BasicGame {
 		for (Object o : objects)
 			o.draw();
 		selector.draw();
+		gui.draw();
+		resources.draw();
 	}
 
 	public static void main(String[] args) {
@@ -78,20 +92,36 @@ public class ZTime extends BasicGame {
 			Logger.getLogger(ZTime.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
+
 	public void mousePressed(int button, int x, int y) {
 		if (button == 0) {
-			cam.onMouseLeftPressed(x, y);
-			selector.onMouseLeftPressed(x, y);
+			if (!gui.mouseLeftPressed(x, y)) {
+				cam.onMouseLeftPressed(x, y);
+				selector.onMouseLeftPressed(x, y);
+			}
+		} 
+	}
+
+	public void mouseReleased(int button, int x, int y) {
+		if (button == 0) {
+			cam.onMouseLeftReleased(x, y);
+			if (!gui.mouseLeftReleased(x, y)) {
+				
+			}
 		} else if (button == 1) {
-			selector.onMouseRightPressed(x, y);
+			if (!gui.mouseRightReleased(x, y)) {
+				selector.onMouseRightReleased(x, y);
+			}
 		}
 	}
 
-	public static Object objectUnder(Vector2f terrainPoint) {
+	public static Selectable selectableUnder(Vector2f terrainPoint) {
 		for (Object o : objects)
 			if (o.isIn(terrainPoint))
 				return o;
+		final int x = (int)terrainPoint.x, y = (int)terrainPoint.y;
+		if (terrain.isIn(x, y))
+			return terrain.get(x, y);
 		return null;
 	}
 }

@@ -5,6 +5,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Vector2f;
 
+import ztime.Camera;
 import ztime.ZTime;
 import ztime.object.composant.Renderer;
 
@@ -23,11 +24,13 @@ public class Building extends Object {
 				&& point.y < pos.y+size.y/2 && point.y > pos.y-size.y/2;
 	}
 
-	public void drawSelection() {
-		Graphics g = ZTime.gc.getGraphics();
+	public void drawSelection(Graphics g, int left, int top, Camera cam) {
 		g.setColor(Color.black);
-		Vector2f screenPos = ZTime.cam.toScreen(pos.copy().sub(size.copy().scale(0.5f)));
-		g.draw(new Rectangle(screenPos.x, screenPos.y, size.x*ZTime.cam.tileSize, size.y*ZTime.cam.tileSize));
+		Vector2f screenPos = cam.toScreen(pos.copy().sub(size.copy().scale(0.5f)));
+		g.draw(new Rectangle(screenPos.x, screenPos.y, size.x*cam.tileSize, size.y*cam.tileSize));
+
+		g.setColor(Color.black);
+		g.drawString(name(), left, top);
 	}
 	
 	public boolean canPlace(Vector2f point) {

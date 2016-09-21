@@ -1,9 +1,15 @@
 package ztime.terrain;
 
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
-public class Case {
+import ztime.Camera;
+import ztime.Selector.Selectable;
+
+public class Case implements Selectable {
 	enum Type {
         Plaine,
         Terre,
@@ -16,7 +22,7 @@ public class Case {
     private static Image imgPlaine, imgTerre, imgSable, imgVegetation, imgPierre, imgEau;
     
     
-    Type type;
+    protected Type type;
     public boolean occupied = false;
     
     public Case(Type type) {
@@ -63,4 +69,11 @@ public class Case {
     		return false;
     	}
     }
+
+	public void drawSelection(Graphics g, int left, int top, Camera cam) {
+		g.setColor(Color.black);
+		g.drawString("Case type "+type, left, top);
+	}
+
+	public void onRightClickSelected(Vector2f point) {}
 }

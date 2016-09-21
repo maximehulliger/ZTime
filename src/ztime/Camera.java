@@ -18,6 +18,7 @@ public class Camera {
 	public final Vector2f pos;
 	/** En pixel */
 	private final Vector2f dragLastPos = new Vector2f();
+	private boolean dragging = false;
 	
 	public Camera(GameContainer gc, Terrain terrain) {
 		this.terrain = terrain;
@@ -40,11 +41,16 @@ public class Camera {
 	
 	public void onMouseLeftPressed(int x, int y) {
 		dragLastPos.set(x, y);
+		dragging = true;
+	}
+	
+	public void onMouseLeftReleased(int x, int y) {
+		dragging = false;
 	}
 	
 	public void update() {
 		// drag movement
-		if (input.isMouseButtonDown(0)) {
+		if (dragging) {
 			Vector2f dragDiff = new Vector2f(input.getMouseX(), input.getMouseY()).sub(dragLastPos);
 			dragDiff.scale(1/tileSize);
 			pos.sub(dragDiff);

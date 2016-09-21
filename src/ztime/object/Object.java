@@ -3,11 +3,13 @@ package ztime.object;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
+import ztime.Selector.Selectable;
 import ztime.object.composant.Composant;
 
-public abstract class Object {
+public abstract class Object implements Selectable {
 	
 	public final Vector2f pos = new Vector2f();
 	private Map<Class<? extends Composant>, Composant> composants = new HashMap<>();
@@ -43,7 +45,16 @@ public abstract class Object {
 
 	public abstract boolean isIn(Vector2f point);
 	
-	public abstract void drawSelection();
-	
 	public void onRightClickSelected(Vector2f point) {}
+	
+	public class ToBuild {
+		public Image image;
+		public Building building;
+		
+		public ToBuild(Image image, Building building) {
+			this.image = image;
+			this.building = building;
+		}
+		
+	}
 }

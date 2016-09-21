@@ -6,11 +6,11 @@ public class CaseGenerator {
 	    float hauteur = computePerlin(x,y,60,0.5f,seed);
 	    //on regarde la hauteur.
 	    if (hauteur<0.35f) return new Case(Case.Type.Eau);
-	    else if (hauteur>0.65f) return new Case(Case.Type.Pierre);
+	    else if (hauteur>0.65f) return new ResourceCase(Case.Type.Pierre);
 	
 	    float humidite = computePerlin(x,y,60,0.5f,seed+1);
 	    //on regarde l'humidité
-	    if (humidite>0.6f) return new Case(Case.Type.Vegetation);
+	    if (humidite>0.6f) return new ResourceCase(Case.Type.Vegetation);
 	    else if (humidite<0.3f) return new Case(Case.Type.Sable);
 	    else return new Case(Case.Type.Plaine);
 	}
