@@ -6,12 +6,14 @@ import ztime.ResourceManager.Resource;
 import ztime.Time;
 import ztime.ZTime;
 import ztime.object.Unit;
+import ztime.terrain.Case;
 import ztime.terrain.Case.Type;
 import ztime.terrain.Pathfinder;
+import ztime.terrain.ResourceCase;
 
 public class GatherResource extends Activity {
 	private static final float gatheringTime = 2;
-	private static final int gatheringAmount = 5;
+	private static final int gatheringAmount = 5000;
 	
 	private enum State {WalkToResource, GatherResource}
 	
@@ -26,7 +28,7 @@ public class GatherResource extends Activity {
 	public GatherResource(Unit unit, Vector2f to) {
 		this.unit = unit;
 		this.gatheringType = ZTime.terrain.get((int)to.x, (int)to.y).type;
-		followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, to.x, to.y));
+		followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, to.x, to.y, gatheringType));
 	}
 	
 	@Override
@@ -38,7 +40,7 @@ public class GatherResource extends Activity {
 				Vector2f gatheringPos = getGatheringPosAround();
 				if (gatheringPos == null) {
 					// on reste en walkToResource
-					followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, unit.pos.x, unit.pos.y));
+					followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, unit.pos.x, unit.pos.y, gatheringType));
 				} else {
 					state = State.GatherResource;
 					gatheringPosX = (int)gatheringPos.x;
@@ -50,11 +52,16 @@ public class GatherResource extends Activity {
 			break;
 		case GatherResource:
 			//on check que la case soit encore là
-			if (ZTime.terrain.get(gatheringPosX, gatheringPosY).type != gatheringType)
+			Case c = ZTime.terrain.get(gatheringPosX, gatheringPosY);
+			if (c.type != gatheringType)
 				state = State.WalkToResource;
 			else {
 				etat += Time.deltaTime;
 				if (etat >= gatheringTime) {
+					ResourceCase rc = (ResourceCase)c;
+					rc.resourceLeft -= gatheringAmount;
+					if (rc.resourceLeft <= 0)
+						ZTime.terrain.setToPlaine(gatheringPosX, gatheringPosY);
 					ZTime.resources.add(Resource.fromCaseType(gatheringType), gatheringAmount);
 					etat = 0;
 				}

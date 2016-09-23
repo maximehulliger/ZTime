@@ -39,13 +39,13 @@ public class Pathfinder {
 		}
 	}
 
-	public static PathNode computePathToRessource(float fromX, float fromY, float toX, float toY) {
+	public static PathNode computePathToRessource(float fromX, float fromY, float toX, float toY, Type caseType) {
 		final int toXi = (int)toX, toYi = (int)toY;
 		if (!terrain.isIn(toXi, toYi))
 			return null;
 		else {
 			PathNode endNode = new Pathfinder().computePathReversedToResource(
-					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f, terrain.get(toXi, toYi).type); 
+					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f, caseType); 
 			if (endNode == null)
 				return null;
 			else {

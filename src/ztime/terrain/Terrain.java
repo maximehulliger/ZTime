@@ -1,5 +1,7 @@
 package ztime.terrain;
 
+import ztime.terrain.Case.Type;
+
 public class Terrain {
 	Case[][] terrain;
 	
@@ -22,5 +24,9 @@ public class Terrain {
 	
 	public boolean isIn(int x, int y) {
 		return x>0 && y>0 && x<size && y<size;
+	}
+	
+	public void setToPlaine(int x, int y) {
+		terrain[x][y] = new Case(Type.Plaine);
 	}
 }
