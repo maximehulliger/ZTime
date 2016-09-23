@@ -16,6 +16,6 @@ public class PathNode {
     }
     
     boolean isNew() {
-    	return D == -1;
+    	return H == -1;
     }
 }

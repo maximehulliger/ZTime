@@ -10,7 +10,7 @@ import ztime.Camera;
 import ztime.Selector.Selectable;
 
 public class Case implements Selectable {
-	enum Type {
+	public enum Type {
         Plaine,
         Terre,
         Sable,
@@ -22,7 +22,7 @@ public class Case implements Selectable {
     private static Image imgPlaine, imgTerre, imgSable, imgVegetation, imgPierre, imgEau;
     
     
-    protected Type type;
+    public Type type;
     public boolean occupied = false;
     
     public Case(Type type) {

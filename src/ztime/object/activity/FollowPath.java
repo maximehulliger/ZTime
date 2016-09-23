@@ -15,10 +15,15 @@ public class FollowPath extends Activity {
 
 	Unit unit;
 	PathNode next;
-	
+
 	public FollowPath(Unit unit, Vector2f to) {
 		this.unit = unit;
 		this.next = Pathfinder.computePath(unit.pos.x, unit.pos.y, to.x, to.y);
+	}
+
+	public FollowPath(Unit unit, PathNode path) {
+		this.unit = unit;
+		this.next = path;
 	}
 	
 	public void update() {

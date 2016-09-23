@@ -8,8 +8,25 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+import ztime.terrain.Case.Type;
+
 public class ResourceManager {
-	public enum Resource {Wood, Rock, Food}
+	
+	public enum Resource {
+		
+		Wood, Rock, Food;
+		
+		public static Resource fromCaseType(Type type) {
+			switch (type) {
+			case Vegetation:
+				return Wood;
+			case Pierre:
+				return Rock;
+			default:
+				return null;
+			}
+		}
+	}
 	
 	public static Map<Resource, Image> imgs = new HashMap<>();
 	public Map<Resource, Integer> resources = new HashMap<>();
