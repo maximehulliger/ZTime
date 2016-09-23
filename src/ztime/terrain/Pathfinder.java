@@ -152,7 +152,7 @@ public class Pathfinder {
 			List<PathNode> voisins = getCachedVoisins(bestNode);
 			for (PathNode v : voisins) {
 				//si on a terminé
-				if (v.c.type == caseType && !bestNode.c.occupied)
+				if (v.c.type == caseType)
 					return bestNode;
 				else if (v.c.isWalkable()) {
 					// selon si la case est en diagonale, on check les autres cases

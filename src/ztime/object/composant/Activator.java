@@ -1,16 +1,25 @@
 package ztime.object.composant;
 
+import ztime.ZTime;
+import ztime.object.Object;
+import ztime.object.Unit;
 import ztime.object.activity.Activity;
 
 public class Activator extends Composant {
 
 	private Activity activity = null;
 	
+	public void setObject(Object object) {
+		super.setObject(object);
+		ZTime.unactivityManager.add((Unit)object);
+	}
+	
 	public void update() {
 		if (activity != null) {
-			if (activity.isOver())
+			if (activity.isOver()) {
 				activity = null;
-			else
+				ZTime.unactivityManager.add((Unit)object);
+			} else
 				activity.update();
 		}
 	}
@@ -19,8 +28,10 @@ public class Activator extends Composant {
 		if (activity != null)
 				activity.draw();
 	}
+	
 	public void set(Activity activity) {
 		this.activity = activity;
+		ZTime.unactivityManager.remove((Unit)object);
 		activity.setActivator(this);
 	}
 

@@ -12,9 +12,13 @@ public class GUIManager {
 	public GUIManager() {
 		GUIElement.graphics = ZTime.gc.getGraphics();
 	}
-	
+
 	public void add(GUIElement e) {
 		elements.add(e);
+	}
+
+	public void remove(GUIElement e) {
+		elements.remove(e);
 	}
 	
 	public void draw() {

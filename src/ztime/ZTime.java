@@ -31,9 +31,9 @@ public class ZTime extends BasicGame {
 	public static GameContainer gc;
 	public static List<Object> objects = new ArrayList<>();
 	public static ResourceManager resources = new ResourceManager();
-	
-	private Selector selector;
-	private GUIManager gui;
+	public static Selector selector;
+	public static UnactiveManager unactivityManager = new UnactiveManager();
+	public static GUIManager gui;
 	
 	public ZTime() {
 		super("ZTime");
@@ -53,6 +53,10 @@ public class ZTime extends BasicGame {
 		Object exampleUnit1 = new Villager();
 		exampleUnit1.pos.set(cam.pos);
 		objects.add(exampleUnit1);
+		Object exampleUnit2 = new Villager();
+		exampleUnit2.pos.set(cam.pos.x, cam.pos.y+1);
+		
+		objects.add(exampleUnit2);
 		
 		Button b = new Button(100 ,100 ,100, 20);
 		b.text = "click me!";

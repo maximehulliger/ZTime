@@ -20,7 +20,7 @@ public class Pane extends GUIElement {
 		graphics.setColor(borderColor);
 		graphics.drawRect(x, y, width, height);
 		graphics.setColor(insideColor);
-		graphics.fillRect(x+1, y+1, width, height);
+		graphics.fillRect(x+1, y+1, width-1, height-1);
 
 		if (text != null) {
 			graphics.setColor(borderColor);

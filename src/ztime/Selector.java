@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
 import ztime.object.Building;
+import ztime.object.Unit;
 
 public class Selector {
 	
@@ -20,6 +21,12 @@ public class Selector {
 	
 	public Selector(GameContainer gc) {
 		this.input = gc.getInput();
+	}
+	
+	public void select(Unit u) {
+		mode = Mode.Selection;
+		selected = u;
+		ZTime.cam.pos.set(u.pos);
 	}
 
 	public void onMouseLeftPressed(int x, int y) {
