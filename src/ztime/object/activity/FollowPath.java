@@ -13,17 +13,22 @@ import ztime.terrain.Pathfinder;
 
 public class FollowPath extends Activity {
 
-	Unit unit;
+	final Unit unit;
 	PathNode next;
+	private final Vector2f to;
 
 	public FollowPath(Unit unit, Vector2f to) {
 		this.unit = unit;
-		this.next = Pathfinder.computePath(unit.pos.x, unit.pos.y, to.x, to.y);
+		this.to = to;
+		this.next = Pathfinder.computePath(unit.pos.x, unit.pos.y, to.x, to.y, unit);
 	}
 
 	public FollowPath(Unit unit, PathNode path) {
 		this.unit = unit;
 		this.next = path;
+		PathNode n = path;
+		for (; n.parent!=null; n=n.parent);
+		to = new Vector2f(n.x, n.x);
 	}
 	
 	public void update() {
@@ -31,11 +36,14 @@ public class FollowPath extends Activity {
 		final float speed = 2;
 		final float depl = speed*Time.deltaTime;
 		if (goal.distanceSquared(unit.pos) < depl*depl) {
-			unit.pos.set(goal);
+			unit.setPos(goal);
 			next = next.parent;
+			if (next != null && !next.c.isFree(unit)) {
+				next = Pathfinder.computePath(unit.pos.x, unit.pos.y, to.x, to.y, unit);
+			}
 		} else {
 			Vector2f toGoal = goal.sub(unit.pos).normalise().scale(depl);
-			unit.pos.add(toGoal);
+			unit.setPos(unit.pos.copy().add(toGoal));
 		}
 	}
 	
@@ -52,4 +60,7 @@ public class FollowPath extends Activity {
 		return next == null;
 	}
 	
+	public void terminate() {
+		
+	}
 }

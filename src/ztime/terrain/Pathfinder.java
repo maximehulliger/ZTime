@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ztime.object.Unit;
 import ztime.terrain.Case.Type;
 
 public class Pathfinder {
@@ -24,13 +25,13 @@ public class Pathfinder {
 		return (float)Math.sqrt(sq(goalX-x)+sq(goalY-y));
 	}
 
-	public static PathNode computePath(float fromX, float fromY, float toX, float toY) {
+	public static PathNode computePath(float fromX, float fromY, float toX, float toY, Unit u) {
 		final int toXi = (int)toX, toYi = (int)toY;
-		if (!terrain.isIn(toXi, toYi) || !terrain.get(toXi, toYi).isWalkable())
+		if (!terrain.isIn(toXi, toYi) || !terrain.get(toXi, toYi).isFree(u))
 			return null;
 		else {
 			PathNode endNode = new Pathfinder().computePathReversed(
-					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f); 
+					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f, u); 
 			if (endNode == null)
 				return null;
 			else {
@@ -39,13 +40,13 @@ public class Pathfinder {
 		}
 	}
 
-	public static PathNode computePathToRessource(float fromX, float fromY, float toX, float toY, Type caseType) {
+	public static PathNode computePathToRessource(float fromX, float fromY, float toX, float toY, Unit u, Type caseType) {
 		final int toXi = (int)toX, toYi = (int)toY;
 		if (!terrain.isIn(toXi, toYi))
 			return null;
 		else {
 			PathNode endNode = new Pathfinder().computePathReversedToResource(
-					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f, caseType); 
+					(int)fromX+0.5f, (int)fromY+0.5f, toXi+0.5f, toYi+0.5f, u, caseType); 
 			if (endNode == null)
 				return null;
 			else {
@@ -79,7 +80,7 @@ public class Pathfinder {
 		}
 	}
 	
-	private PathNode computePathReversed(float fromX, float fromY, float toX, float toY) {
+	private PathNode computePathReversed(float fromX, float fromY, float toX, float toY, Unit u) {
 		Set<PathNode> openList = new HashSet<>();
 		PathNode bestNode = getNode((int)fromX, (int)fromY);
 		bestNode.D = 0;
@@ -97,15 +98,15 @@ public class Pathfinder {
 			//on ajoute ses voisins à l'openList
 			List<PathNode> voisins = getCachedVoisins(bestNode);
 			for (PathNode v : voisins) {
-				if (v.c.isWalkable()) {
+				if (v.c.isFree(u)) {
 					// selon si la case est en diagonale, on check les autres cases
 					final int bnx = (int)bestNode.x,
 							vx = (int)v.x,
 							bny = (int)bestNode.y,
 							vy = (int)v.y;
 					final boolean diagonale = bnx!=vx && bny!=vy;
-					if (!diagonale || (terrain.get(vx, bny).isWalkable()
-							&& terrain.get(bnx, vy).isWalkable())) {
+					if (!diagonale || (terrain.get(vx, bny).isFree(u)
+							&& terrain.get(bnx, vy).isFree(u))) {
 						final float futurD = bestNode.D + (diagonale ? diagCaseDist : 1);
 						if (v.isNew()) {
 							openList.add(v);
@@ -138,7 +139,7 @@ public class Pathfinder {
 	
 	
 	/** Return a case surrounded by a free walkable case. */
-	private PathNode computePathReversedToResource(float fromX, float fromY, float toX, float toY, Type caseType) {
+	private PathNode computePathReversedToResource(float fromX, float fromY, float toX, float toY, Unit u, Type caseType) {
 		Set<PathNode> openList = new HashSet<>();
 		PathNode bestNode = getNode((int)fromX, (int)fromY);
 		bestNode.D = 0;
@@ -154,15 +155,15 @@ public class Pathfinder {
 				//si on a terminé
 				if (v.c.type == caseType)
 					return bestNode;
-				else if (v.c.isWalkable()) {
+				else if (v.c.isFree(u)) {
 					// selon si la case est en diagonale, on check les autres cases
 					final int bnx = (int)bestNode.x,
 							vx = (int)v.x,
 							bny = (int)bestNode.y,
 							vy = (int)v.y;
 					final boolean diagonale = bnx!=vx && bny!=vy;
-					if (!diagonale || (terrain.get(vx, bny).isWalkable()
-							&& terrain.get(bnx, vy).isWalkable())) {
+					if (!diagonale || (terrain.get(vx, bny).isFree(u)
+							&& terrain.get(bnx, vy).isFree(u))) {
 						final float futurD = bestNode.D + (diagonale ? diagCaseDist : 1);
 						if (v.isNew()) {
 							openList.add(v);

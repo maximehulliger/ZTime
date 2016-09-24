@@ -30,6 +30,8 @@ public class Activator extends Composant {
 	}
 	
 	public void set(Activity activity) {
+		if (this.activity != null)
+			this.activity.terminate();
 		this.activity = activity;
 		ZTime.unactivityManager.remove((Unit)object);
 		activity.setActivator(this);

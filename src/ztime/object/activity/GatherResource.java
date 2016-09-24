@@ -13,7 +13,7 @@ import ztime.terrain.ResourceCase;
 
 public class GatherResource extends Activity {
 	private static final float gatheringTime = 2;
-	private static final int gatheringAmount = 5000;
+	private static final int gatheringAmount = 10;
 	
 	private enum State {WalkToResource, GatherResource}
 	
@@ -24,11 +24,13 @@ public class GatherResource extends Activity {
 	private int gatheringPosX, gatheringPosY;
 	private boolean over = false;
 	private float etat = 0;
+	private final Vector2f to;
 	
 	public GatherResource(Unit unit, Vector2f to) {
 		this.unit = unit;
+		this.to = to;
 		this.gatheringType = ZTime.terrain.get((int)to.x, (int)to.y).type;
-		followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, to.x, to.y, gatheringType));
+		followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, to.x, to.y, unit, gatheringType));
 	}
 	
 	@Override
@@ -40,7 +42,9 @@ public class GatherResource extends Activity {
 				Vector2f gatheringPos = getGatheringPosAround();
 				if (gatheringPos == null) {
 					// on reste en walkToResource
-					followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, unit.pos.x, unit.pos.y, gatheringType));
+					followPath = new FollowPath(unit, Pathfinder.computePathToRessource(unit.pos.x, unit.pos.y, to.x, to.y, unit, gatheringType));
+					if (followPath.isOver())
+						over = true;
 				} else {
 					state = State.GatherResource;
 					gatheringPosX = (int)gatheringPos.x;

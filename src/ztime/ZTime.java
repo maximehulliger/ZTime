@@ -21,6 +21,7 @@ import ztime.gui.Button;
 import ztime.gui.GUIManager;
 import ztime.object.Building;
 import ztime.object.Object;
+import ztime.object.Unit;
 import ztime.object.Villager;
 
 public class ZTime extends BasicGame {
@@ -50,11 +51,11 @@ public class ZTime extends BasicGame {
 		cam = new Camera(gc, terrain);
 		selector = new Selector(gc);
 		
-		Object exampleUnit1 = new Villager();
-		exampleUnit1.pos.set(cam.pos);
+		Unit exampleUnit1 = new Villager();
+		exampleUnit1.setPos(cam.pos);
 		objects.add(exampleUnit1);
-		Object exampleUnit2 = new Villager();
-		exampleUnit2.pos.set(cam.pos.x, cam.pos.y+1);
+		Unit exampleUnit2 = new Villager();
+		exampleUnit2.setPos(new Vector2f(cam.pos.x, cam.pos.y+2));
 		
 		objects.add(exampleUnit2);
 		

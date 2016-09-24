@@ -2,7 +2,7 @@ package ztime.terrain;
 
 public class PathNode {
 	
-	final Case c;
+	public final Case c;
 	
 	public final float x, y;
     float D = -1;

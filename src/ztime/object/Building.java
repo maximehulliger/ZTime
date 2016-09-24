@@ -52,7 +52,7 @@ public class Building extends Object {
 		final int ulx = (int)ul.x, uly = (int)ul.y;
 		for (int x = ulx; x < dr.x; x++)
 			for (int y = uly; y < dr.y; y++) {
-				ZTime.terrain.get(x, y).occupied = true;
+				ZTime.terrain.get(x, y).occupator = this;
 			}
 		pos.set(ulx+halfSize.x, uly+halfSize.y);
 		ZTime.objects.add(this);

@@ -15,4 +15,7 @@ public abstract class Activity {
 	public void draw() {}
 	
 	public abstract boolean isOver();
+
+	public void terminate() {}
+	
 }

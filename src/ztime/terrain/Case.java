@@ -8,6 +8,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import ztime.Camera;
 import ztime.Selector.Selectable;
+import ztime.object.Unit;
 
 public class Case implements Selectable {
 	public enum Type {
@@ -23,7 +24,7 @@ public class Case implements Selectable {
     
     
     public Type type;
-    public boolean occupied = false;
+    public Object occupator = null;
     
     public Case(Type type) {
     	this.type = type;
@@ -56,10 +57,8 @@ public class Case implements Selectable {
     		return null;
     	}
     }
-    
+
     public boolean isWalkable() {
-    	if (occupied)
-    		return false;
     	switch (type) {
     	case Plaine:
     	case Terre:
@@ -68,6 +67,15 @@ public class Case implements Selectable {
     	default:
     		return false;
     	}
+    }
+
+    public boolean isFree(Unit u) {
+    	if (occupator == u)
+    		return true;
+    	else if (occupator != null)
+    		return false;
+    	else
+    		return isWalkable();
     }
 
 	public void drawSelection(Graphics g, int left, int top, Camera cam) {
