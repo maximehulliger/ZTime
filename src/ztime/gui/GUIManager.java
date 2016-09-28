@@ -20,10 +20,15 @@ public class GUIManager {
 	public void remove(GUIElement e) {
 		elements.remove(e);
 	}
-	
+
 	public void draw() {
 		for (GUIElement e : elements)
 			e.draw();
+	}
+
+	public void update() {
+		for (GUIElement e : elements)
+			e.update();
 	}
 
 	public boolean mouseLeftPressed(int x, int y) {
@@ -47,6 +52,11 @@ public class GUIManager {
 			if (e.onMouseRightDown(x, y))
 				on = true;
 		return on;
+	}
+	
+	public void mouseMoved(int x, int y) {
+		for (GUIElement e : elements)
+			e.mouseMoved(x, y);
 	}
 
 	public boolean mouseRightReleased(int x, int y) {

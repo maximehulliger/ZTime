@@ -9,14 +9,13 @@ import ztime.Camera;
 import ztime.ZTime;
 import ztime.object.composant.Renderer;
 
-public class Building extends Object {
+public abstract class Building extends Object {
 
 	final Vector2f size;
 	
 	public Building(String name, Vector2f size) {
 		super(name);
 		this.size = size;
-		addComposant(new Renderer("petiteMaison.bmp", size));
 	}
 
 	public boolean isIn(Vector2f point) {
@@ -39,7 +38,7 @@ public class Building extends Object {
 		Vector2f dr = pos.copy().add(halfSize);
 		for (int x = (int)ul.x; x < dr.x; x++)
 			for (int y = (int)ul.y; y < dr.y; y++) {
-				if (!ZTime.terrain.isIn(x,y) || !ZTime.terrain.get(x, y).isWalkable())
+				if (!ZTime.terrain.isIn(x,y) || !ZTime.terrain.get(x, y).isFree(this))
 					return false;
 			}
 		return true;

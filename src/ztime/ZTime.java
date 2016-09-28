@@ -17,9 +17,8 @@ import ztime.terrain.Case;
 import ztime.terrain.Pathfinder;
 import ztime.terrain.Terrain;
 import ztime.Selector.Selectable;
-import ztime.gui.Button;
 import ztime.gui.GUIManager;
-import ztime.object.Building;
+import ztime.object.House;
 import ztime.object.Object;
 import ztime.object.Unit;
 import ztime.object.Villager;
@@ -58,11 +57,6 @@ public class ZTime extends BasicGame {
 		exampleUnit2.setPos(new Vector2f(cam.pos.x, cam.pos.y+2));
 		
 		objects.add(exampleUnit2);
-		
-		Button b = new Button(100 ,100 ,100, 20);
-		b.text = "click me!";
-		b.setOnClick(() -> System.out.println("click"));
-		gui.add(b);
 	}
 	
 	public void update(GameContainer gc, int i) 
@@ -72,9 +66,10 @@ public class ZTime extends BasicGame {
 			o.update();
 		cam.update();
 		selector.update();
+		gui.update();
 		
 		if (gc.getInput().isKeyPressed(Input.KEY_E))
-			selector.setToPlace(new Building("pm", new Vector2f(2, 3)));
+			selector.setToPlace(new House());
 	}
 
 	public void render(GameContainer gc, Graphics g) 
@@ -105,6 +100,10 @@ public class ZTime extends BasicGame {
 				selector.onMouseLeftPressed(x, y);
 			}
 		} 
+	}
+
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		gui.mouseMoved(newx, newy);
 	}
 
 	public void mouseReleased(int button, int x, int y) {

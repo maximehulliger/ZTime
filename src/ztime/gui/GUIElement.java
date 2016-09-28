@@ -9,9 +9,11 @@ public abstract class GUIElement {
 	public GUIElement() {
 	}
 	
+	public abstract void update();
 	public abstract void draw();
 	public abstract boolean onMouseLeftDown(int x, int y);
 	public abstract boolean onMouseLeftUp(int x, int y);
 	public abstract boolean onMouseRightDown(int x, int y);
 	public abstract boolean onMouseRightUp(int x, int y);
+	public abstract void mouseMoved(int x, int y);
 }

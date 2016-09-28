@@ -1,8 +1,11 @@
 package ztime;
 
+import java.util.Map;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -65,27 +68,33 @@ public class Selector {
 	
 	public void draw() {
 		Graphics g = ZTime.gc.getGraphics();
-		
+
+		if (mode == Mode.Placement) {
+			toPlace.drawToPlace(ZTime.cam.toTerrain(new Vector2f(input.getMouseX(), input.getMouseY())));
+		}
+
 		// selected info
-		int leftInfo = ZTime.width - 200;
-		int topInfo = ZTime.height - 100;
-		
+		final int infoWidth = 200, infoHeight = 100;
+		int leftInfo = ZTime.width - infoWidth -1;
+		int topInfo = ZTime.height - infoHeight -1;
 		g.setColor(Color.black);
-		g.drawRect(leftInfo, topInfo, ZTime.width, ZTime.height);
+		g.drawRect(leftInfo, topInfo, infoWidth, infoHeight);
 		g.setColor(new Color(100, 100, 100));
-		g.fillRect(leftInfo+1, topInfo+1, ZTime.width, ZTime.height);
-		
-		switch (mode) {
-		case Selection:
+		g.fillRect(leftInfo+1, topInfo+1, infoWidth-1, infoHeight-1);
+		if (mode == Mode.Selection) {
 			if (selected != null)
 				selected.drawSelection(g, leftInfo+5, topInfo+5, ZTime.cam);
-			break;
-		case Placement:
-			toPlace.drawToPlace(ZTime.cam.toTerrain(new Vector2f(input.getMouseX(), input.getMouseY())));
-			break;
-		case None:
-			break;
 		}
+		
+		// selected actions
+		final int actionWidth = 400, actionHeight = 65;
+		int leftAction = leftInfo - actionWidth;
+		int topAction = ZTime.height - actionHeight -1;
+		g.setColor(Color.black);
+		g.drawRect(leftAction, topAction, actionWidth, actionHeight);
+		g.setColor(new Color(100, 100, 100));
+		g.fillRect(leftAction+1, topAction+1, actionWidth-1, actionHeight-1);
+		
 	}
 	
 	public interface Selectable {

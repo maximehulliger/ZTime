@@ -1,5 +1,7 @@
 package ztime.terrain;
 
+import java.util.Map;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -8,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 import ztime.Camera;
 import ztime.Selector.Selectable;
-import ztime.object.Unit;
+import ztime.object.Object;
 
 public class Case implements Selectable {
 	public enum Type {
@@ -69,7 +71,7 @@ public class Case implements Selectable {
     	}
     }
 
-    public boolean isFree(Unit u) {
+    public boolean isFree(Object u) {
     	if (occupator == u)
     		return true;
     	else if (occupator != null)
@@ -84,4 +86,9 @@ public class Case implements Selectable {
 	}
 
 	public void onRightClickSelected(Vector2f point) {}
+
+	@Override
+	public Map<Image, Runnable> getActions() {
+		return null;
+	}
 }

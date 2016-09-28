@@ -13,8 +13,9 @@ public class UnactiveManager {
 	private Unit unactiveUnitSelected = null;
 	
 	public UnactiveManager() {
-		unactiveUnitButton = new Button(0, 50, 100, 50);
-		unactiveUnitButton.text = "Unactive\nUnits";
+		unactiveUnitButton = new Button(0, 50, 50, 30);
+		unactiveUnitButton.text = "UU";
+		unactiveUnitButton.overText = "Unactive\nUnits";
 		unactiveUnitButton.setOnClick(() -> {
 			int idx = unactiveUnits.indexOf(unactiveUnitSelected);
 			unactiveUnitSelected = unactiveUnits.get(idx == -1 ? 0 : (idx+1)%unactiveUnits.size());
