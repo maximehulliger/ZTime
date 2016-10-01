@@ -20,6 +20,7 @@ public class UnactiveManager {
 			int idx = unactiveUnits.indexOf(unactiveUnitSelected);
 			unactiveUnitSelected = unactiveUnits.get(idx == -1 ? 0 : (idx+1)%unactiveUnits.size());
 			ZTime.selector.select(unactiveUnitSelected);
+			ZTime.cam.pos.set(unactiveUnitSelected.pos);
 		});
 	}
 

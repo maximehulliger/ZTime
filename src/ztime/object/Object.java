@@ -44,7 +44,7 @@ public abstract class Object implements Selectable {
 	}
 
 	public abstract boolean isIn(Vector2f point);
-	
+
 	public void onRightClickSelected(Vector2f point) {}
 	
 	public class ToBuild {

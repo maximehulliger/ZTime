@@ -43,6 +43,7 @@ public class ZTime extends BasicGame {
 			throws SlickException {
 		ZTime.gc = gc;
 		gui = new GUIManager();
+		ImageManager.init();
 		Case.init();
 		ResourceManager.init();
 		terrain = new Terrain(100);

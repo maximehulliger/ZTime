@@ -1,8 +1,15 @@
 package ztime.object;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.newdawn.slick.geom.Vector2f;
 
 import ztime.ZTime;
+import ztime.ImageManager;
+import ztime.ResourceManager.Resource;
 import ztime.object.activity.FollowPath;
 import ztime.object.activity.GatherResource;
 import ztime.object.composant.Activator;
@@ -27,5 +34,21 @@ public class Villager extends Unit {
 				get(Activator.class).set(new FollowPath(this, point));
 		}
 		
+	}
+
+	@Override
+	public List<Action> getActions() {
+		ArrayList<Action> actions = new ArrayList<>();
+		actions.add(new Action(
+				ImageManager.houseIco, 
+				"House: "+House.price().toString(), 
+				() -> ZTime.selector.setToPlace(new House())));
+		return actions;
+	}
+
+	public static Map<Resource, Integer> price() {
+		Map<Resource, Integer> price = new HashMap<>();
+		price.put(Resource.Food, 100);
+		return price;
 	}
 }

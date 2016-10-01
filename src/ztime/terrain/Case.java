@@ -1,6 +1,7 @@
 package ztime.terrain;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
@@ -88,7 +89,7 @@ public class Case implements Selectable {
 	public void onRightClickSelected(Vector2f point) {}
 
 	@Override
-	public Map<Image, Runnable> getActions() {
-		return null;
+	public List<Action> getActions() {
+		return new ArrayList<>();
 	}
 }
